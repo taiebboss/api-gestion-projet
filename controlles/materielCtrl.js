@@ -37,6 +37,7 @@ const materielCtrl={
         } catch (err) {
                 return res.status(500).json({msg:err.message})            
         }
-    },
+    }
+
 }
 module.exports=materielCtrl
