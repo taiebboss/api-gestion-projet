@@ -8,6 +8,7 @@ router.route('/Ajouter').post(auth,authAdmin,userCtrl.Ajouter)
 
 router.get('/getusers',userCtrl.getUsers)
 router.get('/getuserbyid/:id',userCtrl.getUserById)
+router.get('/finduser/:userId',userCtrl.findUser)
 router.post('/login',userCtrl.login);
 router.get('/logout',userCtrl.logout)
 router.delete('/deletUser/:id',userCtrl.deleteUser)

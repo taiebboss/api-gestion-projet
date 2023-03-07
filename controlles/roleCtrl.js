@@ -19,7 +19,8 @@ getRols:async(req,res)=>{
 
     try {
         const role=await roles.find();
-        return res.status(200).json(role);
+        let  tab = role.filter(item => item.libelle !=='admin' )
+        return res.status(200).json(tab);
     } catch (error) {
         return res.status(500).json({msg:error.message})      
     }

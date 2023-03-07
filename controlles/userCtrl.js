@@ -32,7 +32,7 @@ const userCtrl={
     login:async(req,res)=>{
         try {
             const {email,password}=req.body;
-            const user=await Users.findOne({email})
+            const user=await Users.findOne({email}).populate('role','libelle').exec()
             if (!user) return res.status(400).json({msg:"User does not exist."})
             const isMatch =await bcrypt.compare(password,user.password)
             if(!isMatch) return res.status(400).json({msg:"Incorrect password"})
@@ -48,7 +48,8 @@ const userCtrl={
          })
 
 
-res.json({accessToken})
+         
+res.json({...user._doc,accessToken})
         } catch (error) {
             return res.status(500).json({msg:error.message})
         }
@@ -66,7 +67,7 @@ res.json({accessToken})
     getUserById:async(req,res)=>{
         try {
             const id=req.params.id
-            const user=await Users.findById(id)
+            const user=await Users.findById(id).populate('role','libelle').exec()
             if (!user) return res.status(400).json({msg:'User does not exist'})
             res.json( user)
         } catch (err) {
@@ -75,11 +76,25 @@ res.json({accessToken})
     },
     getUsers:async(req,res)=>{
         try {
-            const user=await Users.find()
+            const user=await Users.find().populate('role','libelle').exec()
             if (!user) return res.status(400).json({msg:'User does not exist'})
-            res.json( user)
+            let  tab = user.filter(item => item.role.libelle !=='admin' )
+            res.json( tab)
+          
         } catch (err) {
             return res.status(500).json({msg:err.message})
+        }
+    },
+  findUser : async (req, res) => {
+        try {
+            const { userId } = req.params;
+            if (!userId) return res.status(400).json({ message: "ERROR ID!" });
+            const result = await Users.findById(userId).populate('role','libelle').exec()
+                    console.log(result.role.libelle)
+            return res.status(200).json({ message: "Success", result});
+        } catch (err) {
+            res.status(500).json({ message: "INTERNAL ERROR SERVER!" });
+            console.log(err.message);
         }
     },
 
@@ -129,7 +144,7 @@ res.json({accessToken})
     },
     getUser:async(req,res)=>{
         try {
-            const user=await Users.findById(req.user.id).select('-password')
+            const user=await Users.findById(req.user.id).select('-password').populate('role','libelle').exec()
             if (!user) return res.status(400).json({msg:'User does not exist'})
             res.json( user)
         } catch (err) {

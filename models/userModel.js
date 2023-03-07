@@ -27,8 +27,8 @@ const userSchema= new mongoose.Schema({
        
     },
     role:{
-        type:String,
-        default:'employe'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "roles",
     },
 
 }

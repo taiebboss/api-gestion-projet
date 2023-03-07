@@ -12,6 +12,8 @@ const upload=require('./routes/upload')
 const roleRouter=require('./routes/roleRouter')
 const equipeRouter=require('./routes/equipeRouter')
 const tacheRouter=require('./routes/tacheRouter')
+const ProjetRouter=require('./routes/projetRouter')
+
 const app=express();
 
 app.use(express.json())
@@ -27,6 +29,7 @@ app.use('/upload',upload)
 app.use('/role',roleRouter)
 app.use('/equipe',equipeRouter)
 app.use('/tache',tacheRouter)
+app.use('/projet',ProjetRouter)
 app.get('/',(req,res)=>{
     res.json({msg:'welcom to my app'})
 })

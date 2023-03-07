@@ -9,8 +9,8 @@ var EquipeSchema=new mongoose.Schema({
         },
     membre:[
         {
-            nom:{ type: String },
-            role:{type:String}
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Users",
         }
     ]
 })
